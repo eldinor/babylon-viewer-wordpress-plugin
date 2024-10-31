@@ -24,7 +24,9 @@ Supports models from **external URLs**.
 
 **Shortcode:**
 
-[babylonviewer]URL-OF-3D-FILE[/babylonviewer]. Supports external URLs.
+[babylonviewer]URL-OF-3D-FILE[/babylonviewer].
+
+Supports external URLs.
 
 **Demo**: http://va.local/
 

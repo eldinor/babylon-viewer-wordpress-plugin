@@ -18,11 +18,13 @@ to use the Babylon Viewer v2 in Wordpress posts and pages, Woocommerce products,
 
 Supports **GLTF, GLB, STL, OBJ+MTL** files upload and demonstration as a viewing experience for 3D models. All aspects of this experience are configurable. If you need more control, you may use <babylon-viewer></babylon-viewer> tag in any Wordpress HTML block and configure all needed parameters with JS.
 
-Supports **external URL**s.
+Supports models from **external URLs**.
 
 **Doesn't write any data to WP database.**
 
-**Shortcode:** [babylonviewer]URL-OF-3D-FILE[/babylonviewer]. Supports external URLs.
+**Shortcode:**
+
+[babylonviewer]URL-OF-3D-FILE[/babylonviewer]. Supports external URLs.
 
 **Demo**: http://va.local/
 

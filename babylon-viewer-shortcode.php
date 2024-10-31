@@ -16,7 +16,7 @@
 defined( 'ABSPATH' ) or die( 'No script kiddies please!' );
 
 // Adding new MIME types.
-function babylonviewer_upload_mime_types( $mimes ) {
+function babylonviewerv2_upload_mime_types( $mimes ) {
 // Add new allowed MIME types here.
     $mimes['gltf'] = 'model/gltf+json';
     $mimes['glb'] = 'model/gltf-binary';
@@ -27,10 +27,10 @@ function babylonviewer_upload_mime_types( $mimes ) {
 // Return the array back to the function with our added MIME type(s).
     return $mimes;
 }
-add_filter( 'upload_mimes', 'babylonviewer_upload_mime_types' );
+add_filter( 'upload_mimes', 'babylonviewerv2_upload_mime_types' );
 
 // Add allowed filetypes.
-function babylonviewer_correct_filetypes( $data, $file, $filename, $mimes, $real_mime ) {
+function babylonviewerv2_correct_filetypes( $data, $file, $filename, $mimes, $real_mime ) {
     if ( ! empty( $data['ext'] ) && ! empty( $data['type'] ) ) {
       return $data;
     }
@@ -63,18 +63,18 @@ function babylonviewer_correct_filetypes( $data, $file, $filename, $mimes, $real
     }
     return $data;
 }
-add_filter( 'wp_check_filetype_and_ext', 'babylonviewer_correct_filetypes' , 10, 5 );
+add_filter( 'wp_check_filetype_and_ext', 'babylonviewerv2_correct_filetypes' , 10, 5 );
 
 // Adding Babylon Viewer into header
-function babylonviewer_call() {
+function babylonviewerv2_call() {
    if ( strpos( get_the_content(), '[babylonviewer]' ) !== false || strpos( get_the_content(), '</babylon-viewer>' ) !== false ) {
     wp_enqueue_script_module( 'babylon-viewer', esc_url_raw( 'https://unpkg.com/@babylonjs/viewer@preview/dist/babylon-viewer.esm.min.js' ), array(), null, true );
    }
 } // END babylonviewer_call()
-add_action( 'wp_enqueue_scripts', 'babylonviewer_call' );
+add_action( 'wp_enqueue_scripts', 'babylonviewerv2_call' );
 
 // Adding Babylon Viewer shortcode
-function babylonviewer_shortcode($atts = [], $content = null) {
+function babylonviewerv2_shortcode($atts = [], $content = null) {
     $url = esc_url_raw($content);
     $content = '<babylon-viewer ';
     $content .=	'source="';
@@ -82,4 +82,4 @@ function babylonviewer_shortcode($atts = [], $content = null) {
  	$content .= '"></babylon-viewer>';
     return $content;
 }
-add_shortcode('babylonviewer', 'babylonviewer_shortcode');
+add_shortcode('babylonviewer', 'babylonviewerv2_shortcode');

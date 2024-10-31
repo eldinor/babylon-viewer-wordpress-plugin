@@ -26,9 +26,7 @@ Supports models from **external URLs**.
 
 [babylonviewer]URL-OF-3D-FILE[/babylonviewer].
 
-Supports external URLs.
-
-**Demo**: http://va.local/
+**Demo**: https://viewer.babylonpress.org/
 
 ## Installation and Usage
 
@@ -58,7 +56,7 @@ Just put it into standard **Wordpress HTML Gutenberg block** and publish:
 
 Read more about Babylon Viewer v2 settings at [https://github.com/BabylonJS/Babylon.js/tree/master/packages/public/@babylonjs/viewer-alpha](https://github.com/BabylonJS/Babylon.js/tree/master/packages/public/@babylonjs/viewer-alpha)
 
-**Wordpress Demo**: http://va.local/
+**Wordpress Demo**: https://viewer.babylonpress.org/
 
 ## Changelog
 

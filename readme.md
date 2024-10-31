@@ -30,16 +30,19 @@ Supports models from **external URLs**.
 
 ## Installation and Usage
 
-0. Download the latest zip from Github repository.
-1. Standard WordPress plugin installation: go to Plugins -> Add New – upload .zip file.
+1. Download the latest zip from Github repository.
+
+![image](https://github.com/user-attachments/assets/c457bcdc-6916-4020-bd60-d94d1bc28c05)
+
+2. Standard WordPress plugin installation: go to Plugins -> Add New – upload .zip file.
    **If you use older version of this plugin, first deactivate it and delete**. Plugin doesn't contain any user data.
-2. Activate the plugin.
-3. **Upload** 3D file in **GLTF, GLB, STL, OBJ+MTL** format. If you upload OBJ file, make sure to upload corresponding MTL file too.
+3. Activate the plugin.
+4. **Upload** 3D file in **GLTF, GLB, STL, OBJ+MTL** format. If you upload OBJ file, make sure to upload corresponding MTL file too.
    **Or use external URL** - link to the 3D file.
-4. **Publish** in **WordPress posts and pages, Woocommerce products, Elementor blocks** etc with the help of **shortcode**:
+5. **Publish** in **WordPress posts and pages, Woocommerce products, Elementor blocks** etc with the help of **shortcode**:
    [babylonviewer]Url-Of-3D-File[/babylonviewer]
    Make sure there are **no spaces** between URL and shortcode brackets[babylonviewer]**URL**[/babylonviewer].
-5. Another option is to publish 3D files with the standard WordPress HTML block and have more ways to configure Babylon Viewer. You may adjust all needed parameters (light, camera position, camera behaviour, rotating etc), create our own Viewer instance, change UI etc.
+6. Another option is to publish 3D files with the standard WordPress HTML block and have more ways to configure Babylon Viewer. You may adjust all needed parameters (light, camera position, camera behaviour, rotating etc), create our own Viewer instance, change UI etc.
 
 ### Shortcode Example
 

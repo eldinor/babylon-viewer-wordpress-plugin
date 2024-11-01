@@ -1,6 +1,6 @@
 # Babylon Viewer v2 3D Wordpress 3D Plugin
 
-### Version 1.01 alpha
+### Version 1.0 alpha
 
 ![](https://img.shields.io/badge/Wordpress%203DViewer-navy)
 ![](https://img.shields.io/badge/maturity-alpha-blue)

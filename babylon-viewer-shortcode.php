@@ -68,7 +68,7 @@ add_filter( 'wp_check_filetype_and_ext', 'babylonviewerv2_correct_filetypes' , 1
 // Adding Babylon Viewer into header
 function babylonviewerv2_call() {
    if ( strpos( get_the_content(), '[babylonviewer]' ) !== false || strpos( get_the_content(), '</babylon-viewer>' ) !== false ) {
-    wp_enqueue_script_module( 'babylon-viewer', esc_url_raw( 'https://cdn.jsdelivr.net/npm/@babylonjs/viewer@preview/dist/babylon-viewer.esm.min.js' ), array(), null, true );
+    wp_enqueue_script_module( 'babylon-viewer', esc_url_raw( 'https://cdn.jsdelivr.net/npm/@babylonjs/viewer@7.32.3-alpha/dist/babylon-viewer.esm.min.js' ), array(), null, true );
    }
 } // END babylonviewer_call()
 add_action( 'wp_enqueue_scripts', 'babylonviewerv2_call' );

@@ -43,7 +43,7 @@ function babylonviewerv2_correct_filetypes( $data, $file, $filename, $mimes, $re
     }
     if ( 'glb' === $wp_file_type['ext'] ) {
       $data['ext']  = 'glb';
-      $data['type'] = 'model/glb-binary';
+      $data['type'] = 'model/gltf-binary';
     }
     if ( 'babylon' === $wp_file_type['ext'] ) {
       $data['ext']  = 'babylon';

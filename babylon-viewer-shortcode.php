@@ -9,7 +9,7 @@
  * Licence: GNU General Public License v3.0
  * Licence URI: https://www.gnu.org/licenses/gpl-3.0.html
  * Text Domain: babylonviewer-shortcode
- * GitHub Plugin URI: https://github.com/eldinor/babylon-wordpress-plugin
+ * GitHub Plugin URI: https://github.com/eldinor/babylon-viewer-wordpress-plugin
  */
 
 // SECURITY: to ensure PHP execution is only allowed when it is included as part of the core system.

@@ -54,7 +54,9 @@ Just put it into standard **Wordpress HTML Gutenberg block** and publish:
 `<babylon-viewer
   source="https://playground.babylonjs.com/scenes/BoomBox.glb" environment="https://unpkg.com/@babylonjs/viewer@preview/assets/photoStudio.env"></babylon-viewer>`
 
-Read more about Babylon Viewer v2 settings at [https://github.com/BabylonJS/Babylon.js/tree/master/packages/public/@babylonjs/viewer-alpha](https://github.com/BabylonJS/Babylon.js/tree/master/packages/public/@babylonjs/viewer-alpha)
+Read more about Babylon Viewer v2 settings at https://doc.babylonjs.com/features/featuresDeepDive/babylonViewer/
+
+Viewer v2 Source - [https://github.com/BabylonJS/Babylon.js/tree/master/packages/public/@babylonjs/viewer-alpha](https://github.com/BabylonJS/Babylon.js/tree/master/packages/public/@babylonjs/viewer-alpha)
 
 **Wordpress Demo**: https://viewer.babylonpress.org/
 

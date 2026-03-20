@@ -1,85 +1,160 @@
 <?php
 /**
- * Plugin Name: Babylon Viewer v2 for Wordpress
+ * Plugin Name: Babylon Viewer v2 for WordPress
  * Plugin URI: https://babylonpress.org/
- * Description: Display 3D models with the help of shortcode [babylonviewer]URL-OF-3D-FILE[/babylonviewer] to use the 3D Viewer v2 in Wordpress posts and pages, Woocommerce products, Elementor blocks etc. Supports GLTF, GLB, STL, OBJ+MTL files upload and demonstration as a viewing experience for 3D models.  All aspects of this experience are configurable. If you need more control, you may use <babylon-viewer></babylon-viewer> tag in any Wordpress HTML block and configure all needed parameters with JS. Supports external URLs. Doesn't write any data to WP database.
- * Version: 1.1
+ * Description: Display 3D models with shortcode [babylonviewer]URL-OF-3D-FILE[/babylonviewer]. Supports GLTF, GLB, STL, OBJ+MTL, Babylon files, external URLs, and manual <babylon-viewer></babylon-viewer> usage in HTML blocks.
+ * Version: 1.1.2
  * Author: Andrei Stepanov
  * Author URI: https://babylonpress.org/
- * Licence: GNU General Public License v3.0
- * Licence URI: https://www.gnu.org/licenses/gpl-3.0.html
+ * License: GNU General Public License v3.0
+ * License URI: https://www.gnu.org/licenses/gpl-3.0.html
  * Text Domain: babylonviewer-shortcode
  * GitHub Plugin URI: https://github.com/eldinor/babylon-viewer-wordpress-plugin
  */
 
-// SECURITY: to ensure PHP execution is only allowed when it is included as part of the core system.
-defined( 'ABSPATH' ) or die( 'No script kiddies please!' );
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
 
-// Adding new MIME types.
+/**
+ * Allow additional 3D file MIME types.
+ */
 function babylonviewerv2_upload_mime_types( $mimes ) {
-// Add new allowed MIME types here.
-    $mimes['gltf'] = 'model/gltf+json';
-    $mimes['glb'] = 'model/gltf-binary';
-    $mimes['obj'] = 'model/obj';
-    $mimes['mtl'] = 'model/mtl';
-    $mimes['stl'] = 'model/stl';
-    $mimes['babylon'] = 'model/babylon+json';
-// Return the array back to the function with our added MIME type(s).
-    return $mimes;
+	$mimes['gltf']    = 'model/gltf+json';
+	$mimes['glb']     = 'model/gltf-binary';
+	$mimes['obj']     = 'text/plain';
+	$mimes['mtl']     = 'text/plain';
+	$mimes['stl']     = 'model/stl';
+	$mimes['babylon'] = 'application/json';
+
+	return $mimes;
 }
 add_filter( 'upload_mimes', 'babylonviewerv2_upload_mime_types' );
 
-// Add allowed filetypes.
+/**
+ * Fix file type detection for custom 3D formats.
+ */
 function babylonviewerv2_correct_filetypes( $data, $file, $filename, $mimes, $real_mime ) {
-    if ( ! empty( $data['ext'] ) && ! empty( $data['type'] ) ) {
-      return $data;
-    }
-    $wp_file_type = wp_check_filetype( $filename, $mimes );
+	if ( ! empty( $data['ext'] ) && ! empty( $data['type'] ) ) {
+		return $data;
+	}
 
-// Check for the file type you want to enable, e.g. 'gltf'.
-    if ( 'gltf' === $wp_file_type['ext'] ) {
-      $data['ext']  = 'gltf';
-      $data['type'] = 'model/gltf+json';
-    }
-    if ( 'glb' === $wp_file_type['ext'] ) {
-      $data['ext']  = 'glb';
-      $data['type'] = 'model/gltf-binary';
-    }
-    if ( 'babylon' === $wp_file_type['ext'] ) {
-      $data['ext']  = 'babylon';
-      $data['type'] = 'model/babylon+json';
-    }
-        if ( 'obj' === $wp_file_type['ext'] ) {
-      $data['ext']  = 'obj';
-      $data['type'] = 'model/obj';
-    }
-        if ( 'mtl' === $wp_file_type['ext'] ) {
-      $data['ext']  = 'mtl';
-      $data['type'] = 'model/mtl';
-    }
-        if ( 'stl' === $wp_file_type['ext'] ) {
-      $data['ext']  = 'stl';
-      $data['type'] = 'model/stl';
-    }
-    return $data;
+	$wp_file_type = wp_check_filetype( $filename, $mimes );
+
+	if ( empty( $wp_file_type['ext'] ) ) {
+		return $data;
+	}
+
+	switch ( $wp_file_type['ext'] ) {
+		case 'gltf':
+			$data['ext']  = 'gltf';
+			$data['type'] = 'model/gltf+json';
+			break;
+
+		case 'glb':
+			$data['ext']  = 'glb';
+			$data['type'] = 'model/gltf-binary';
+			break;
+
+		case 'babylon':
+			$data['ext']  = 'babylon';
+			$data['type'] = 'application/json';
+			break;
+
+		case 'obj':
+			$data['ext']  = 'obj';
+			$data['type'] = 'text/plain';
+			break;
+
+		case 'mtl':
+			$data['ext']  = 'mtl';
+			$data['type'] = 'text/plain';
+			break;
+
+		case 'stl':
+			$data['ext']  = 'stl';
+			$data['type'] = 'model/stl';
+			break;
+	}
+
+	return $data;
 }
-add_filter( 'wp_check_filetype_and_ext', 'babylonviewerv2_correct_filetypes' , 10, 5 );
+add_filter( 'wp_check_filetype_and_ext', 'babylonviewerv2_correct_filetypes', 10, 5 );
 
-// Adding Babylon Viewer into header
-function babylonviewerv2_call() {
-   if ( strpos( get_the_content(), '[babylonviewer]' ) !== false || strpos( get_the_content(), '</babylon-viewer>' ) !== false ) {
-    wp_enqueue_script_module( 'babylon-viewer', esc_url_raw( 'https://cdn.jsdelivr.net/npm/@babylonjs/viewer@8.1.1/dist/babylon-viewer.esm.min.js' ), array(), null, true );
-   }
-} // END babylonviewer_call()
-add_action( 'wp_enqueue_scripts', 'babylonviewerv2_call' );
-
-// Adding Babylon Viewer shortcode
-function babylonviewerv2_shortcode($atts = [], $content = null) {
-    $url = esc_url_raw($content);
-    $content = '<babylon-viewer ';
-    $content .=	'source="';
- 	$content .= $url;
- 	$content .= '"></babylon-viewer>';
-    return $content;
+/**
+ * Register Babylon Viewer script.
+ */
+function babylonviewerv2_register_assets() {
+	wp_register_script(
+		'babylon-viewer',
+		'https://cdn.jsdelivr.net/npm/@babylonjs/viewer@8.56.1/dist/babylon-viewer.esm.min.js',
+		array(),
+		'8.56.1',
+		true
+	);
 }
-add_shortcode('babylonviewer', 'babylonviewerv2_shortcode');
+add_action( 'wp_enqueue_scripts', 'babylonviewerv2_register_assets' );
+
+/**
+ * Force script tag to be type="module" for Babylon Viewer ESM build.
+ */
+function babylonviewerv2_script_loader_tag( $tag, $handle, $src ) {
+	if ( 'babylon-viewer' !== $handle ) {
+		return $tag;
+	}
+
+	return '<script type="module" src="' . esc_url( $src ) . '"></script>' . "\n";
+}
+add_filter( 'script_loader_tag', 'babylonviewerv2_script_loader_tag', 10, 3 );
+
+/**
+ * Decide whether Babylon Viewer should be loaded.
+ */
+function babylonviewerv2_maybe_enqueue() {
+	if ( is_admin() ) {
+		return;
+	}
+
+	if ( ! is_singular() ) {
+		return;
+	}
+
+	$post = get_queried_object();
+
+	if ( ! ( $post instanceof WP_Post ) ) {
+		return;
+	}
+
+	$content = (string) $post->post_content;
+
+	if (
+		has_shortcode( $content, 'babylonviewer' ) ||
+		strpos( $content, '<babylon-viewer' ) !== false
+	) {
+		wp_enqueue_script( 'babylon-viewer' );
+	}
+}
+add_action( 'wp_enqueue_scripts', 'babylonviewerv2_maybe_enqueue', 20 );
+
+/**
+ * Shortcode output.
+ * Usage: [babylonviewer]https://example.com/model.glb[/babylonviewer]
+ */
+function babylonviewerv2_shortcode( $atts = array(), $content = null ) {
+	$url = trim( (string) $content );
+
+	if ( empty( $url ) ) {
+		return '';
+	}
+
+	$url = esc_url( $url );
+
+	if ( empty( $url ) ) {
+		return '';
+	}
+
+	wp_enqueue_script( 'babylon-viewer' );
+
+	return '<babylon-viewer source="' . esc_url( $url ) . '" style="display:block;width:100%;height:500px;"></babylon-viewer>';
+}
+add_shortcode( 'babylonviewer', 'babylonviewerv2_shortcode' );
